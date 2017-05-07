@@ -66,6 +66,8 @@ component.push('rows[4]', cell);
 
 ### tween(key, end, options?)
 
+[Live demo](https://svelte.technology/repl?version=1.20.2&gist=996cc5446b4f12d0708d2d1fca9f53b6)
+
 Smoothly tweens `key` from its current value to the `end` value. Numerical values (and non-cyclical objects and arrays, as long as their leaf properties are numerical) are automatically interpolated, or you can supply a custom function.
 
 The available options (and default values) are:
