@@ -17,29 +17,29 @@ npm install --save svelte-extras
 <button on:click='push("todos", newTodo)'>add todo</button>
 
 <ul>
-	{{#each todos as todo, i}}
-		<li>
-			<button on:click='splice("todos", i, 1)'>x</button>
-			{{todo}}
-		</li>
-	{{/each}}
+  {{#each todos as todo, i}}
+    <li>
+      <button on:click='splice("todos", i, 1)'>x</button>
+      {{todo}}
+    </li>
+  {{/each}}
 </ul>
 
 <script>
-	import { push, splice } from 'svelte-extras';
+  import { push, splice } from 'svelte-extras';
 
-	export default {
-		data: function () {
-			return {
-				todos: ['add some more todos']
-			};
-		},
+  export default {
+    data: function () {
+      return {
+        todos: ['add some more todos']
+      };
+    },
 
-		methods: {
-			push,
-			splice
-		}
-	};
+    methods: {
+      push,
+      splice
+    }
+  };
 </script>
 ```
 
