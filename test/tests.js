@@ -279,5 +279,31 @@ describe('svelte-extras', () => {
 				throw new Error('Promise should not be fulfilled');
 			});
 		});
+
+		it('allows custom interpolators', () => {
+			const { component, target, raf } = setup(`{{x}}`, {
+				x: 'a'
+			});
+
+			const tween = component.tween('x', 'z', {
+				duration: 100,
+				interpolate: (a, b) => {
+					const start = a.charCodeAt(0);
+					const delta = b.charCodeAt(0) - start;
+					return t => String.fromCharCode(~~(start + t * delta));
+				}
+			});
+
+			raf.tick(50);
+			assert.equal(component.get('x'), 'm');
+			assert.htmlEqual(target.innerHTML, 'm');
+
+			raf.tick(100);
+
+			return tween.then(() => {
+				assert.equal(component.get('x'), 'z');
+				assert.htmlEqual(target.innerHTML, 'z');
+			});
+		});
 	});
 });

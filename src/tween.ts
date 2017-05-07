@@ -113,6 +113,7 @@ interface Options {
 	delay?: number
 	duration?: number
 	easing?(t: number): number
+	interpolate?(a: any, b: any): any // TODO this type declaration is wrong... not sure what it should look like
 }
 
 function linear (x: number) {
@@ -143,7 +144,7 @@ export function tween(this: Component, key: string, to: any, options: Options = 
 
 	const t = {
 		key,
-		value: interpolate(this.get(key), to),
+		value: (options.interpolate || interpolate)(this.get(key), to),
 		to,
 		start,
 		end,
