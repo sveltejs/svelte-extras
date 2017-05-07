@@ -10,7 +10,7 @@ Install with npm or yarn...
 npm install --save svelte-extras
 ```
 
-...then add to your component methods:
+...then add to your component methods ([live demo](https://svelte.technology/repl?version=1.20.2&gist=66bb8372ed59124c3568c26a2b39dce2)):
 
 ```html
 <input bind:value='newTodo'>
@@ -31,6 +31,7 @@ npm install --save svelte-extras
   export default {
     data: function () {
       return {
+        newTodo: '',
         todos: ['add some more todos']
       };
     },
