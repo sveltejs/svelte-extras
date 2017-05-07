@@ -10,7 +10,7 @@ Install with npm or yarn...
 npm install --save svelte-extras
 ```
 
-...then add to your component methods ([live demo](https://svelte.technology/repl?version=1.20.2&gist=66bb8372ed59124c3568c26a2b39dce2)):
+...then add to your component methods:
 
 ```html
 <input bind:value='newTodo'>
@@ -46,7 +46,7 @@ npm install --save svelte-extras
 
 ## Available methods
 
-### Array methods
+### Array methods ([live demo](https://svelte.technology/repl?version=1.20.2&gist=66bb8372ed59124c3568c26a2b39dce2))
 
 * push
 * pop
@@ -64,9 +64,7 @@ component.push('foo.bar.baz', 42);
 component.push('rows[4]', cell);
 ```
 
-### tween(key, end, options?)
-
-[Live demo](https://svelte.technology/repl?version=1.20.2&gist=996cc5446b4f12d0708d2d1fca9f53b6)
+### tween(key, end, options?) ([live demo](https://svelte.technology/repl?version=1.20.2&gist=996cc5446b4f12d0708d2d1fca9f53b6))
 
 Smoothly tweens `key` from its current value to the `end` value. Numerical values (and non-cyclical objects and arrays, as long as their leaf properties are numerical) are automatically interpolated, or you can supply a custom function.
 
