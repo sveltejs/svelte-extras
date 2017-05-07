@@ -46,6 +46,8 @@ npm install --save svelte-extras
 
 ## Available methods
 
+### Array methods
+
 * push
 * pop
 * shift
@@ -61,6 +63,20 @@ component.push('todos', 'finish writing this documentation');
 component.push('foo.bar.baz', 42);
 component.push('rows[4]', cell);
 ```
+
+### tween(key, end, options?)
+
+Smoothly tweens `key` from its current value to the `end` value. Numerical values (and non-cyclical objects and arrays, as long as their leaf properties are numerical) are automatically interpolated, or you can supply a custom function.
+
+The available options (and default values) are:
+
+* **delay** (0) — the delay in milliseconds before the tween starts
+* **duration** (400) — the duration of the tween
+* **easing** (x => x) — which easing function to use (see e.g. [eases-jsnext](https://github.com/rollup/eases-jsnext)))
+* **interpolate** (see above) — a function that generators a custom interpolator, for e.g. transitioning strings representing colors. Must take arguments `a` and `b` and return a function that takes a value `t` between 0 and 1
+
+This method returns a promise with an additional `abort` method. The tween will be aborted automatically if `key` is updated separately, either by a second tween or via `component.set(...)`. The promise will not resolve if the tween is aborted.
+
 
 ## Tree-shaking
 

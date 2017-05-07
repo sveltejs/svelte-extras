@@ -29,6 +29,7 @@
   "homepage": "https://github.com/sveltejs/svelte-extras#readme",
   "devDependencies": {
     "@types/node": "^7.0.18",
+    "console-group": "^0.3.3",
     "eslint": "^3.19.0",
     "eslint-plugin-import": "^2.2.0",
     "jsdom": "^10.1.0",

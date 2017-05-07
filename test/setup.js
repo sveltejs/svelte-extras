@@ -3,7 +3,7 @@ const { JSDOM } = require('jsdom');
 const svelte = require('svelte');
 const extras = require('../dist/svelte-extras.cjs.js');
 
-module.exports = function getComponent(
+module.exports = function setup(
 	template = `
 		{{#each array as item}}
 			({{item}})
@@ -15,6 +15,28 @@ module.exports = function getComponent(
 	global.document = window.document;
 	const target = window.document.querySelector('main');
 
+	// set of hacks to support tween tests
+	const raf = {
+		time: 0,
+		callback: null,
+		tick: now => {
+			raf.time = now;
+			if ( raf.callback ) raf.callback();
+		}
+	};
+	window.performance = { now: () => raf.time };
+	global.requestAnimationFrame = cb => {
+		let called = false;
+		raf.callback = () => {
+			if ( !called ) {
+				called = true;
+				cb();
+			}
+		};
+	};
+
+	global.window = window;
+
 	Object.assign(global, extras);
 
 	const Component = svelte.create(`
@@ -22,7 +44,7 @@ module.exports = function getComponent(
 
 		<script>
 			export default {
-				methods: { push, pop, shift, unshift, splice, sort, reverse }
+				methods: { push, pop, shift, unshift, splice, sort, reverse, tween }
 			}
 		</script>
 	`);
@@ -31,5 +53,5 @@ module.exports = function getComponent(
 		data
 	});
 
-	return { component, target };
+	return { component, target, raf };
 };

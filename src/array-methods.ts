@@ -1,9 +1,6 @@
-const arrayNotationPattern = /\[\s*(\d+)\s*\]/g;
+import Component from './interfaces.ts';
 
-interface Component {
-	set(data: {}): void
-	get(key?: string): any
-}
+const arrayNotationPattern = /\[\s*(\d+)\s*\]/g;
 
 function makeArrayMethod(name: string) {
 	return function(this:Component, keypath: string, ...args: any[]) {
