@@ -146,6 +146,34 @@ describe('svelte-extras', () => {
 			});
 		});
 
+		it('tweens a date', () => {
+			const a = 1496986887000;
+			const b = 1496986888000;
+			const c = 1496986889000;
+
+			const { component, target, raf } = setup(`{{x.getTime()}}`, {
+				x: new Date(a)
+			});
+
+			const tween = component.tween('x', new Date(c), {
+				duration: 100
+			});
+
+			assert.equal(component.get('x').getTime(), a);
+			assert.htmlEqual(target.innerHTML, String(a));
+
+			raf.tick(50);
+			assert.equal(component.get('x').getTime(), b);
+			assert.htmlEqual(target.innerHTML, String(b));
+
+			raf.tick(100);
+
+			return tween.then(() => {
+				assert.equal(component.get('x').getTime(), c);
+				assert.htmlEqual(target.innerHTML, String(c));
+			});
+		});
+
 		it('tweens an array', () => {
 			const { component, target, raf } = setup(`{{x[0]}}`, {
 				x: [20]

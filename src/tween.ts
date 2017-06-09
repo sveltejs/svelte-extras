@@ -57,11 +57,11 @@ const scheduler = {
 	}
 };
 
-function snap ( to: any ) {
+function snap(to: any) {
 	return () => to;
 }
 
-function interpolate (a: any, b: any) {
+function interpolate(a: any, b: any) {
 	if (a === b || a !== a) return snap(a);
 
 	const type: string = typeof a;
@@ -71,7 +71,7 @@ function interpolate (a: any, b: any) {
 	}
 
 	if (Array.isArray(a)) {
-		const arr = b.map((bi :any, i :number) => {
+		const arr = b.map((bi: any, i: number) => {
 			return interpolate(a[i], bi);
 		});
 
@@ -82,6 +82,15 @@ function interpolate (a: any, b: any) {
 
 	if (type === 'object') {
 		if (!a || !b) throw new Error('Object cannot be null');
+
+		if (isDate(a) && isDate(b)) {
+			a = a.getTime();
+			b = b.getTime();
+			const delta = b - a;
+			return (t: number) => {
+				return new Date(a + t * delta);
+			};
+		}
 
 		const keys = Object.keys(b);
 		const interpolators: any = {};
@@ -116,7 +125,7 @@ interface Options {
 	interpolate?(a: any, b: any): any // TODO this type declaration is wrong... not sure what it should look like
 }
 
-function linear (x: number) {
+function linear(x: number) {
 	return x;
 }
 
@@ -138,7 +147,7 @@ export function tween(this: Component, key: string, to: any, options: Options = 
 
 	if (this._currentTweens[key]) this._currentTweens[key].abort();
 
-	const start = window.performance.now() + ( options.delay || 0 );
+	const start = window.performance.now() + (options.delay || 0);
 	const duration = options.duration || 400;
 	const end = start + duration;
 
@@ -169,4 +178,8 @@ export function tween(this: Component, key: string, to: any, options: Options = 
 	promise.abort = t.abort;
 
 	return promise;
+}
+
+function isDate(obj) {
+	return Object.prototype.toString.call(obj) === '[object Date]';
 }
