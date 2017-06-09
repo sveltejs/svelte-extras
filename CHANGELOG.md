@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.2.0
+
+* Interpolate dates
+
 ## 1.1.1
 
 * Support custom interpolators with `tween`
