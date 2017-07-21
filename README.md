@@ -46,7 +46,7 @@ npm install --save svelte-extras
 
 ## Available methods
 
-### Array methods ([live demo](https://svelte.technology/repl?version=1.20.2&gist=66bb8372ed59124c3568c26a2b39dce2))
+### Array methods ([live demo](https://svelte.technology/repl?gist=66bb8372ed59124c3568c26a2b39dce2))
 
 * push
 * pop
@@ -64,7 +64,7 @@ component.push('foo.bar.baz', 42);
 component.push('rows[4]', cell);
 ```
 
-### tween(key, end, options?) ([live demo](https://svelte.technology/repl?version=1.20.2&gist=996cc5446b4f12d0708d2d1fca9f53b6))
+### tween(key, end, options?) ([live demo](https://svelte.technology/repl?gist=996cc5446b4f12d0708d2d1fca9f53b6))
 
 Smoothly tweens `key` from its current value to the `end` value. Numerical values (and non-cyclical objects and arrays, as long as their leaf properties are numerical) are automatically interpolated, or you can supply a custom function.
 
@@ -78,7 +78,7 @@ The available options (and default values) are:
 This method returns a promise with an additional `abort` method. The tween will be aborted automatically if `key` is updated separately, either by a second tween or via `component.set(...)`. The promise will not resolve if the tween is aborted.
 
 
-### observeDeep(keypath, callback, options?)
+### observeDeep(keypath, callback, options?) ([live demo](https://svelte.technology/repl?gist=94f68745adb18799030ef4c732c9774d))
 
 Exactly the same as the built-in `observe` method, except that it observes nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (observe the `bar` property of the `foo` object) or `baz[0]` (observe the first member of the `baz` array).
 
