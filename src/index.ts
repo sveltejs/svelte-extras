@@ -1,2 +1,3 @@
-export * from './array-methods.js';
-export * from './tween.js';
+export * from './array-methods';
+export * from './tween';
+export * from './observe-deep';

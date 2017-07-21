@@ -44,7 +44,17 @@ module.exports = function setup(
 
 		<script>
 			export default {
-				methods: { push, pop, shift, unshift, splice, sort, reverse, tween }
+				methods: {
+					push,
+					pop,
+					shift,
+					unshift,
+					splice,
+					sort,
+					reverse,
+					tween,
+					observeDeep
+				}
 			}
 		</script>
 	`);
