@@ -398,5 +398,27 @@ describe('svelte-extras', () => {
 				[undefined, 1]
 			]);
 		});
+
+		it('observes a property of an array', () => {
+			const foo = [1];
+			const { component } = setup(`{{foo[0]}}`, { foo });
+
+			const observed = [];
+
+			component.observeDeep('foo[0]', (n, o) => {
+				observed.push([o, n]);
+			});
+
+			foo[0] = 2;
+			component.set({ foo });
+
+			component.set({ foo: [3] });
+
+			assert.deepEqual(observed, [
+				[undefined, 1],
+				[1, 2],
+				[2, 3]
+			]);
+		});
 	});
 });

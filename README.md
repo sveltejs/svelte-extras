@@ -78,6 +78,11 @@ The available options (and default values) are:
 This method returns a promise with an additional `abort` method. The tween will be aborted automatically if `key` is updated separately, either by a second tween or via `component.set(...)`. The promise will not resolve if the tween is aborted.
 
 
+### observeDeep(keypath, callback, options?)
+
+Exactly the same as the built-in `observe` method, except that it observes nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (observe the `bar` property of the `foo` object) or `baz[0]` (observe the first member of the `baz` array).
+
+
 ## Tree-shaking
 
 If you're using a module bundler that supports tree-shaking, such as [Rollup](https://rollupjs.org), only the methods your components use will be included in your app.

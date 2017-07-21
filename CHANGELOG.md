@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.3.0
+
+* Add `observeDeep` method
+
 ## 1.2.0
 
 * Interpolate dates
