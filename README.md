@@ -84,11 +84,11 @@ Exactly the same as the built-in `observe` method, except that it observes neste
 
 ### getDeep(keypath) ([live demo](https://svelte.technology/repl?gist=42b551d60f971f953468a2142cfb25f3))
 
-Similar to the built-in `get` method, except that it gets nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (observe the `bar` property of the `foo` object) or `baz[0]` (observe the first member of the `baz` array).
+Similar to the built-in `get` method, except that it gets nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (get the `bar` property of the `foo` object) or `baz[0]` (get the first member of the `baz` array).
 
 ### setDeep(keypath, value) ([live demo](https://svelte.technology/repl?gist=e33d01f9796341992101d8c23070eb76))
 
-Similar to the built-in `set` method, except that it sets nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (observe the `bar` property of the `foo` object) or `baz[0]` (observe the first member of the `baz` array).
+Similar to the built-in `set` method, except that it sets nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (set the `bar` property of the `foo` object) or `baz[0]` (set the first member of the `baz` array).
 
 
 ## Tree-shaking
