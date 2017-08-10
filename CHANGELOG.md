@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.4.0
+
+* Add `getDeep` and `setDeep` methods
+
 ## 1.3.0
 
 * Add `observeDeep` method

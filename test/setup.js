@@ -53,7 +53,9 @@ module.exports = function setup(
 					sort,
 					reverse,
 					tween,
-					observeDeep
+					observeDeep,
+					getDeep,
+					setDeep
 				}
 			}
 		</script>
