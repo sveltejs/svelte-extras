@@ -19,7 +19,6 @@ function setDeep( this:Component, keypath:string, value:any ) {
   const keys = keypath.replace( /\[(\d+)\]/g, '.$1' ).split( '.' );
   const lastKey = keys.pop();
 	
-	// If not a nested keypath
 	if ( keys[0] === undefined ) { 
 		const data:any = {};
 		data[ lastKey ] = value;
