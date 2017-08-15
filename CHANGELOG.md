@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.4.1
+
+* Fix `setDeep` method when keypath is a non-nested data root key ([#3](https://github.com/sveltejs/svelte-extras/issues/3))
+
 ## 1.4.0
 
 * Add `getDeep` and `setDeep` methods
