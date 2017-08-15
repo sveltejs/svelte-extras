@@ -5,7 +5,7 @@ function getDeep( this:Component, keypath:string ) {
     return this.get(); 
   }
   
-  const keys = keypath.replace(/\[(\d+)\]/g, '.$1').split( '.' );
+  const keys = keypath.replace( /\[(\d+)\]/g, '.$1' ).split( '.' );
   let value = this.get( keys[0] );
   for ( let i = 1; i < keys.length; i++ ) {
     value = value[ keys[i] ];
@@ -16,8 +16,16 @@ function getDeep( this:Component, keypath:string ) {
 function setDeep( this:Component, keypath:string, value:any ) {
   if ( keypath === undefined ) { return; }
   
-  const keys = keypath.replace(/\[(\d+)\]/g, '.$1').split( '.' );
+  const keys = keypath.replace( /\[(\d+)\]/g, '.$1' ).split( '.' );
   const lastKey = keys.pop();
+	
+	// If not a nested keypath
+	if ( keys[0] === undefined ) { 
+		const data:any = {};
+		data[ lastKey ] = value;
+		this.set( data );
+		return;
+	}
   
   let object = this.get( keys[0] );
   for ( let i = 1; i < keys.length; i++ ) {
