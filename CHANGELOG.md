@@ -2,7 +2,7 @@
 
 ## 1.4.1
 
-* Fix `setDeep` method when keypath is a non-nested data root key ([#3](https://github.com/sveltejs/svelte-extras/issues/3))
+* Fix `setDeep` method when keypath is a non-nested data root key ([#5](https://github.com/sveltejs/svelte-extras/issues/5))
 
 ## 1.4.0
 
