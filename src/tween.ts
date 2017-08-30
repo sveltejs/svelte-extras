@@ -123,6 +123,7 @@ interface Options {
 	duration?: number
 	easing?(t: number): number
 	interpolate?(a: any, b: any): any // TODO this type declaration is wrong... not sure what it should look like
+	adjustDuration?: boolean
 }
 
 function linear(x: number) {
@@ -145,10 +146,16 @@ export function tween(this: Component, key: string, to: any, options: Options = 
 		};
 	}
 
-	if (this._currentTweens[key]) this._currentTweens[key].abort();
+	let durationProgressModifier = 1;
+	if (this._currentTweens[key]) {
+		const { progressRatio } = this._currentTweens[key].abort();
+		if (options.adjustDuration) {
+			durationProgressModifier = progressRatio;
+		}
+	}
 
 	const start = window.performance.now() + (options.delay || 0);
-	const duration = options.duration || 400;
+	const duration = (options.duration || 400) * durationProgressModifier;
 	const end = start + duration;
 
 	const t = {
@@ -163,6 +170,7 @@ export function tween(this: Component, key: string, to: any, options: Options = 
 		abort: () => {
 			t.running = false;
 			delete this._currentTweens[key];
+			return { progressRatio: (window.performance.now() - start) / duration };
 		}
 	};
 

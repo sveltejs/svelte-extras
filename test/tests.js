@@ -308,6 +308,44 @@ describe('svelte-extras', () => {
 			});
 		});
 
+		it('adjusts the duration of a tween that replaced a tween in progress if { adjustDuration: true }', () => {
+			const { component, target, raf } = setup(`{{x}}`, {
+				x: 20
+			});
+
+			let tween = component.tween('x', 40, {
+				duration: 100
+			});
+
+			assert.equal(component.get('x'), 20);
+			assert.htmlEqual(target.innerHTML, '20');
+
+			// 40% through tween
+			raf.tick(40);
+			assert.equal(component.get('x'), 28);
+			assert.htmlEqual(target.innerHTML, '28');
+
+			// new tween will only use 40% of its duration, 40ms
+			tween = component.tween('x', 130, {
+				duration: 100,
+				adjustDuration: true
+			});
+
+
+			// 20ms later, but 50% done of 100ms
+			raf.tick(60);
+			assert.equal(component.get('x'), 79);
+			assert.htmlEqual(target.innerHTML, '79');
+
+			// 40 so far, yet 100% done
+			raf.tick(80);
+
+			return tween.then(() => {
+				assert.equal(component.get('x'), 130);
+				assert.htmlEqual(target.innerHTML, '130');
+			});
+		});
+
 		it('allows custom interpolators', () => {
 			const { component, target, raf } = setup(`{{x}}`, {
 				x: 'a'

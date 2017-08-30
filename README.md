@@ -74,6 +74,7 @@ The available options (and default values) are:
 * **duration** (400) — the duration of the tween
 * **easing** (x => x) — which easing function to use (see e.g. [eases-jsnext](https://github.com/rollup/eases-jsnext)))
 * **interpolate** (see above) — a function that generators a custom interpolator, for e.g. transitioning strings representing colors. Must take arguments `a` and `b` and return a function that takes a value `t` between 0 and 1
+* **adjustDuration** (false) — if `tween` is called on a key while a tween is already in progress on that key, adjust the duration of the new tween so that the same percentage of it remains that the previous tween had progressed. For example, If the previous tween's duration was 100ms and was aborted after 50ms, the tween that replaced it will be reduced by 50%.
 
 This method returns a promise with an additional `abort` method. The tween will be aborted automatically if `key` is updated separately, either by a second tween or via `component.set(...)`. The promise will not resolve if the tween is aborted.
 
