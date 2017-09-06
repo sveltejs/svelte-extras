@@ -55,7 +55,8 @@ module.exports = function setup(
 					tween,
 					observeDeep,
 					getDeep,
-					setDeep
+					setDeep,
+					spring
 				}
 			}
 		</script>
