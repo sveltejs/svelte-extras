@@ -29,7 +29,7 @@ const scheduler = {
 			for (const key in component._springs) {
 				const spring = component._springs[key];
 
-				if (spring.tick(data)) {
+				if (!spring.aborted && spring.tick(data)) {
 					hasSprings = true;
 					hasComponents = true;
 				} else {
@@ -65,6 +65,7 @@ class Spring {
 	stiffness: number;
 	damping: number;
 	done: boolean;
+	aborted: boolean;
 
 	constructor(key: string | number, a: any, b: any, options: SpringOptions) {
 		this.key = key;
@@ -72,6 +73,10 @@ class Spring {
 		this.stiffness = options.stiffness;
 		this.damping = options.damping;
 		this.done = false;
+	}
+
+	abort() {
+		this.aborted = true;
 	}
 
 	tick(object: any) {
