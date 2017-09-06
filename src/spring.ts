@@ -1,8 +1,6 @@
 import { isDate } from './shared';
 import { Component } from './interfaces';
 
-const THRESHOLD = 0.001;
-
 const scheduler = {
 	components: <Component[]>[],
 
@@ -62,7 +60,7 @@ interface SpringOptions {
 }
 
 class Spring {
-	key: string;
+	key: string | number;
 
 	stiffness: number;
 	damping: number;
@@ -81,10 +79,27 @@ class Spring {
 	}
 }
 
+class SnapSpring extends Spring {
+	target: any;
+
+	constructor(key: string | number, a: any, b: any, options: SpringOptions) {
+		super(key, a, b, options);
+		this.target = b;
+	}
+
+	tick(object: any) {
+		object[this.key] = this.target;
+		return false;
+	}
+}
+
 class NumericSpring extends Spring {
 	value: number;
 	target: number;
 	velocity: number;
+
+	valueThreshold: number;
+	velocityThreshold: number;
 
 	constructor(key: string | number, a: number, b: number, options: SpringOptions) {
 		super(key, a, b, options);
@@ -92,6 +107,9 @@ class NumericSpring extends Spring {
 		this.value = a;
 		this.target = b;
 		this.velocity = 0;
+
+		this.valueThreshold = Math.abs(b - a) * 0.01;
+		this.velocityThreshold = this.valueThreshold; // TODO is this right?
 	}
 
 	tick(object: any) {
@@ -106,12 +124,38 @@ class NumericSpring extends Spring {
 
 		object[this.key] = this.value;
 
-		if (this.velocity < THRESHOLD && Math.abs(this.target - this.value) < THRESHOLD) {
+		if (
+			this.velocity < this.velocityThreshold &&
+			Math.abs(this.target - this.value) < this.valueThreshold
+		) {
 			object[this.key] = this.target;
 			return false;
 		}
 
 		object[this.key] = this.value;
+		return true;
+	}
+}
+
+class DateSpring extends Spring {
+	dummy: {};
+	target: Date;
+	subspring: NumericSpring;
+
+	constructor(key: string | number, a: Date, b: Date, options: SpringOptions) {
+		super(key, a, b, options);
+		this.dummy = {};
+		this.target = b;
+		this.subspring = new NumericSpring(key, a.getTime(), b.getTime(), options);
+	}
+
+	tick(object: any) {
+		if (!this.subspring.tick(this.dummy)) {
+			object[this.key] = this.target;
+			return false;
+		}
+
+		object[this.key] = new Date(this.subspring.value);
 		return true;
 	}
 }

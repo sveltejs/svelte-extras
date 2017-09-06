@@ -30,33 +30,33 @@ module.exports = () => {
 			});
 		});
 
-		// it('tweens a date', () => {
-		// 	const a = 1496986887000;
-		// 	const b = 1496986888000;
-		// 	const c = 1496986889000;
+		it('springs a date', () => {
+			const a = 1496986887000;
+			const c = 1496986889000;
 
-		// 	const { component, target, raf } = setup(`{{x.getTime()}}`, {
-		// 		x: new Date(a)
-		// 	});
+			const { component, target, raf } = setup(`{{x.getTime()}}`, {
+				x: new Date(a)
+			});
 
-		// 	const tween = component.tween('x', new Date(c), {
-		// 		duration: 100
-		// 	});
+			const spring = component.spring('x', new Date(c), {
+				stiffness: 0.1,
+				damping: 0.01
+			});
 
-		// 	assert.equal(component.get('x').getTime(), a);
-		// 	assert.htmlEqual(target.innerHTML, String(a));
+			raf.tick(null);
+			assert(component.get('x'), 22);
+			raf.tick(null);
+			assert(component.get('x'), 25.78);
 
-		// 	raf.tick(50);
-		// 	assert.equal(component.get('x').getTime(), b);
-		// 	assert.htmlEqual(target.innerHTML, String(b));
+			while (component.get('x').getTime() !== c) {
+				raf.tick(null);
+			}
 
-		// 	raf.tick(100);
-
-		// 	return tween.then(() => {
-		// 		assert.equal(component.get('x').getTime(), c);
-		// 		assert.htmlEqual(target.innerHTML, String(c));
-		// 	});
-		// });
+			return spring.then(() => {
+				assert.equal(component.get('x').getTime(), c);
+				assert.htmlEqual(target.innerHTML, String(c));
+			});
+		});
 
 		it('springs an array', () => {
 			const { component, target, raf } = setup(`{{x[0]}}`, {
@@ -111,61 +111,6 @@ module.exports = () => {
 				assert.htmlEqual(target.innerHTML, '40');
 			});
 		});
-
-		// it('allows tweens to be aborted programmatically', () => {
-		// 	const { component, target, raf } = setup(`{{x}}`, {
-		// 		x: 20
-		// 	});
-
-		// 	const tween = component.tween('x', 40, {
-		// 		duration: 100
-		// 	});
-
-		// 	assert.equal(component.get('x'), 20);
-		// 	assert.htmlEqual(target.innerHTML, '20');
-
-		// 	tween.abort();
-
-		// 	raf.tick(50);
-		// 	assert.equal(component.get('x'), 20);
-		// 	assert.htmlEqual(target.innerHTML, '20');
-
-		// 	tween.then(() => {
-		// 		throw new Error('Promise should not be fulfilled');
-		// 	});
-		// });
-
-		// it('aborts a tween if a new tween takes its place', () => {
-		// 	const { component, target, raf } = setup(`{{x}}`, {
-		// 		x: 20
-		// 	});
-
-		// 	let tween = component.tween('x', 40, {
-		// 		duration: 100
-		// 	});
-
-		// 	assert.equal(component.get('x'), 20);
-		// 	assert.htmlEqual(target.innerHTML, '20');
-
-		// 	raf.tick(50);
-		// 	assert.equal(component.get('x'), 30);
-		// 	assert.htmlEqual(target.innerHTML, '30');
-
-		// 	tween = component.tween('x', 130, {
-		// 		duration: 100
-		// 	});
-
-		// 	raf.tick(75);
-		// 	assert.equal(component.get('x'), 55);
-		// 	assert.htmlEqual(target.innerHTML, '55');
-
-		// 	raf.tick(150);
-
-		// 	return tween.then(() => {
-		// 		assert.equal(component.get('x'), 130);
-		// 		assert.htmlEqual(target.innerHTML, '130');
-		// 	});
-		// });
 
 		// it('aborts a tween if data is set', () => {
 		// 	const { component, target, raf } = setup(`{{x}}`, {
