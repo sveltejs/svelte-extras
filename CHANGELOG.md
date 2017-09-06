@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.5.0
+
+* Add a `spring` method ([#7](https://github.com/sveltejs/svelte-extras/pull/7))
+
 ## 1.4.1
 
 * Fix `setDeep` method when keypath is a non-nested data root key ([#5](https://github.com/sveltejs/svelte-extras/issues/5))
