@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.5.1
+
+* Fix spring end threshold
+
 ## 1.5.0
 
 * Add a `spring` method ([#7](https://github.com/sveltejs/svelte-extras/pull/7))
