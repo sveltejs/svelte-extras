@@ -74,7 +74,7 @@ function number(key: string | number, a: number, b: number, options: SpringOptio
 
 	const { stiffness, damping } = options;
 
-	const valueThreshold = Math.abs(b - a) * 0.01;
+	const valueThreshold = Math.abs(b - a) * 0.001;
 	const velocityThreshold = valueThreshold; // TODO is this right?
 
 	return (object: any) => {
