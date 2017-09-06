@@ -2,8 +2,8 @@ const assert = require('assert');
 const setup = require('../setup.js');
 
 module.exports = () => {
-	describe('spring', () => {
-		it.only('springs a number', () => {
+	describe.only('spring', () => {
+		it('springs a number', () => {
 			const { component, target, raf } = setup(`{{x}}`, {
 				x: 20
 			});
@@ -58,57 +58,59 @@ module.exports = () => {
 		// 	});
 		// });
 
-		// it('tweens an array', () => {
-		// 	const { component, target, raf } = setup(`{{x[0]}}`, {
-		// 		x: [20]
-		// 	});
+		it('springs an array', () => {
+			const { component, target, raf } = setup(`{{x[0]}}`, {
+				x: [20]
+			});
 
-		// 	const tween = component.tween('x', [40], {
-		// 		duration: 100
-		// 	});
+			const spring = component.spring('x', [40], {
+				stiffness: 0.1,
+				damping: 0.01
+			});
 
-		// 	assert.deepEqual(component.get('x'), [20]);
-		// 	assert.htmlEqual(target.innerHTML, '20');
+			raf.tick(null);
+			assert(component.get('x')[0], 22);
+			raf.tick(null);
+			assert(component.get('x')[0], 25.78);
 
-		// 	raf.tick(50);
-		// 	assert.deepEqual(component.get('x'), [30]);
-		// 	assert.htmlEqual(target.innerHTML, '30');
+			// this isn't great — it could be exactly 40 while
+			// the spring is still active. not sure how best to test
+			while (component.get('x')[0] !== 40) {
+				raf.tick(null);
+			}
 
-		// 	raf.tick(100);
+			return spring.then(() => {
+				assert.equal(component.get('x')[0], 40);
+				assert.htmlEqual(target.innerHTML, '40');
+			});
+		});
 
-		// 	return tween.then(() => {
-		// 		assert.deepEqual(component.get('x'), [40]);
-		// 		assert.htmlEqual(target.innerHTML, '40');
-		// 	});
-		// });
+		it('springs an object', () => {
+			const { component, target, raf } = setup(`{{x.y}}`, {
+				x: { y: 20 }
+			});
 
-		// it('tweens an object', () => {
-		// 	const { component, target, raf } = setup(`{{x.y}}`, {
-		// 		x: { y: 20 }
-		// 	});
+			const spring = component.spring('x', { y: 40 }, {
+				stiffness: 0.1,
+				damping: 0.01
+			});
 
-		// 	const tween = component.tween(
-		// 		'x',
-		// 		{ y: 40 },
-		// 		{
-		// 			duration: 100
-		// 		}
-		// 	);
+			raf.tick(null);
+			assert(component.get('x').y, 22);
+			raf.tick(null);
+			assert(component.get('x').y, 25.78);
 
-		// 	assert.deepEqual(component.get('x'), { y: 20 });
-		// 	assert.htmlEqual(target.innerHTML, '20');
+			// this isn't great — it could be exactly 40 while
+			// the spring is still active. not sure how best to test
+			while (component.get('x').y !== 40) {
+				raf.tick(null);
+			}
 
-		// 	raf.tick(50);
-		// 	assert.deepEqual(component.get('x'), { y: 30 });
-		// 	assert.htmlEqual(target.innerHTML, '30');
-
-		// 	raf.tick(100);
-
-		// 	return tween.then(() => {
-		// 		assert.deepEqual(component.get('x'), { y: 40 });
-		// 		assert.htmlEqual(target.innerHTML, '40');
-		// 	});
-		// });
+			return spring.then(() => {
+				assert.equal(component.get('x').y, 40);
+				assert.htmlEqual(target.innerHTML, '40');
+			});
+		});
 
 		// it('allows tweens to be aborted programmatically', () => {
 		// 	const { component, target, raf } = setup(`{{x}}`, {

@@ -1,4 +1,5 @@
-import Component from './interfaces.ts';
+import { isDate } from './shared';
+import { Component } from './interfaces';
 
 const THRESHOLD = 0.001;
 
@@ -30,16 +31,13 @@ const scheduler = {
 			for (const key in component._springs) {
 				const spring = component._springs[key];
 
-				spring.tick();
-
-				if (spring.done) { // TODO???
-					data[key] = spring.target;
-					delete component._springs[key];
-					spring.fulfil();
-				} else {
+				if (spring.tick(data)) {
 					hasSprings = true;
 					hasComponents = true;
-					data[key] = spring.value;
+				} else {
+					component._springCallbacks[key]();
+					delete component._springs[key];
+					delete component._springCallbacks[key];
 				}
 			}
 
@@ -63,34 +61,40 @@ interface SpringOptions {
 	damping: number;
 }
 
-class NumericSpring {
+class Spring {
 	key: string;
-	value: number;
-	target: number;
 
 	stiffness: number;
 	damping: number;
-	velocity: number;
 	done: boolean;
 
-	fulfil: () => void;
-	reject: (err: Error) => void;
-
-	constructor(key: string, a: number, b: number, options: SpringOptions) {
+	constructor(key: string | number, a: any, b: any, options: SpringOptions) {
 		this.key = key;
-		this.value = a;
-		this.target = b;
-
-		this.fulfil = null;
-		this.reject = null;
 
 		this.stiffness = options.stiffness;
 		this.damping = options.damping;
-		this.velocity = 0;
 		this.done = false;
 	}
 
-	tick() {
+	tick(object: any) {
+		// overridden by each implementation
+	}
+}
+
+class NumericSpring extends Spring {
+	value: number;
+	target: number;
+	velocity: number;
+
+	constructor(key: string | number, a: number, b: number, options: SpringOptions) {
+		super(key, a, b, options);
+
+		this.value = a;
+		this.target = b;
+		this.velocity = 0;
+	}
+
+	tick(object: any) {
 		const d = this.target - this.value;
 		const spring = this.stiffness * d;
 		const damper = this.damping * this.velocity;
@@ -100,15 +104,129 @@ class NumericSpring {
 		this.velocity += acceleration;
 		this.value += this.velocity;
 
+		object[this.key] = this.value;
+
 		if (this.velocity < THRESHOLD && Math.abs(this.target - this.value) < THRESHOLD) {
-			this.done = true;
+			object[this.key] = this.target;
+			return false;
+		}
+
+		object[this.key] = this.value;
+		return true;
+	}
+}
+
+class ArraySpring extends Spring {
+	value: object;
+	target: object;
+	subsprings: Spring[];
+
+	constructor(key: string | number, a: any[], b: any[], options: SpringOptions) {
+		super(key, a, b, options);
+
+		this.value = [];
+		this.target = b;
+		this.subsprings = [];
+
+		for (let i = 0; i < a.length; i += 1) {
+			this.subsprings.push(getSpring(i, a[i], b[i], options));
 		}
 	}
+
+	tick(object: any) {
+		let active = false;
+
+		for (let i = 0; i < this.subsprings.length; i += 1) {
+			if (this.subsprings[i].tick(this.value)) active = true;
+		}
+
+		if (!active) {
+			object[this.key] = this.target;
+			return false;
+		}
+
+		object[this.key] = this.value;
+		return true;
+	}
+}
+
+class ObjectSpring extends Spring {
+	value: object;
+	target: object;
+	subsprings: Spring[];
+
+	constructor(key: string | number, a: object, b: object, options: SpringOptions) {
+		super(key, a, b, options);
+
+		this.value = {};
+		this.target = b;
+		this.subsprings = [];
+
+		for (const k in a) {
+			this.subsprings.push(getSpring(k, a[k], b[k], options));
+		}
+	}
+
+	tick(object: any) {
+		let active = false;
+
+		for (let i = 0; i < this.subsprings.length; i += 1) {
+			if (this.subsprings[i].tick(this.value)) active = true;
+		}
+
+		if (!active) {
+			object[this.key] = this.target;
+			return false;
+		}
+
+		object[this.key] = this.value;
+		return true;
+	}
+}
+
+function getSpring(key: string | number, a: any, b: any, options: SpringOptions) {
+	if (a === b || a !== a) return new SnapSpring(key, a, b, options);
+
+	const type: string = typeof a;
+
+	if (type !== typeof b || Array.isArray(a) !== Array.isArray(b)) {
+		throw new Error('Cannot interpolate values of different type');
+	}
+
+	if (Array.isArray(a)) {
+		if (a.length !== b.length) {
+			throw new Error('Cannot interpolate arrays of different length');
+		}
+
+		return new ArraySpring(key, a, b, options);
+	}
+
+	if (type === 'object') {
+		if (!a || !b) throw new Error('Object cannot be null');
+
+		if (isDate(a) && isDate(b)) {
+			return new DateSpring(key, a, b, options);
+		}
+
+		const aKeys = Object.keys(a);
+		const bKeys = Object.keys(b);
+
+		if (!keysMatch(a, b)) throw new Error('Cannot interpolate differently-shaped objects');
+
+		return new ObjectSpring(key, a, b, options);
+	}
+
+	if (type === 'number') {
+		return new NumericSpring(key, a, b, options);
+	}
+
+	throw new Error(`Cannot interpolate ${type} values`);
 }
 
 export function spring(this: Component, key: string, to: any, options: SpringOptions) {
 	if (!this._springs) {
 		this._springs = Object.create(null);
+		this._springCallbacks = Object.create(null);
 		this._springing = false;
 
 		const set = this.set;
@@ -123,23 +241,27 @@ export function spring(this: Component, key: string, to: any, options: SpringOpt
 		};
 	}
 
-	let spring = this._springs[key];
-	if (spring) {
-		spring.reject(new Error(`'${key}' pring was given a new target value`));
-		spring.target = to; // TODO verify the types match
-		spring.stiffness = options.stiffness;
-		spring.damping = options.damping;
-	} else {
-		spring = new NumericSpring(key, this.get(key), to, options);
-		this._springs[key] = spring;
-	}
+	const spring = getSpring(key, this.get(key), to, options);
+	this._springs[key] = spring;
+
+	const promise = new Promise((fulfil) => {
+		this._springCallbacks[key] = fulfil;
+	});
 
 	scheduler.add(this);
 
-	let running;
+	return promise;
+}
 
-	return new Promise((fulfil, reject) => {
-		spring.fulfil = fulfil;
-		spring.reject = reject;
-	});
+function keysMatch(a: object, b: object) {
+	const aKeys = Object.keys(a);
+	const bKeys = Object.keys(b);
+
+	if (aKeys.length !== bKeys.length) return false;
+
+	for (let i = 0; i < aKeys.length; i += 1) {
+		if (!(aKeys[i] in b)) return false;
+	}
+
+	return true;
 }
