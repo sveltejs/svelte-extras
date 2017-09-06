@@ -2,7 +2,7 @@ const assert = require('assert');
 const setup = require('../setup.js');
 
 module.exports = () => {
-	describe.only('spring', () => {
+	describe('spring', () => {
 		it('springs a number', () => {
 			const { component, target, raf } = setup(`{{x}}`, {
 				x: 20
