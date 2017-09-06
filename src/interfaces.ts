@@ -6,6 +6,13 @@ export interface Component {
 		callback: (newValue: any, oldValue: any) => void,
 		options?: ObserverOptions
 	): Observer;
+
+	_currentTweens?: Record<string, any>; // TODO
+	_tweening?: boolean;
+
+	_springs?: Record<string, any>; // TODO
+	_springCallbacks?: Record<string, () => void>;
+	_springing?: boolean;
 }
 
 export interface Observer {

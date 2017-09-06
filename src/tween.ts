@@ -1,7 +1,8 @@
-import Component from './interfaces.ts';
+import { isDate } from './shared';
+import { Component } from './interfaces';
 
 const scheduler = {
-	components: [],
+	components: <Component[]>[],
 
 	running: false,
 
@@ -178,8 +179,4 @@ export function tween(this: Component, key: string, to: any, options: Options = 
 	promise.abort = t.abort;
 
 	return promise;
-}
-
-function isDate(obj) {
-	return Object.prototype.toString.call(obj) === '[object Date]';
 }
