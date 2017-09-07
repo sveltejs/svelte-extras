@@ -216,7 +216,7 @@ export function spring(this: Component, key: string, to: any, options: SpringOpt
 		this.set = (data: {}) => {
 			if (!this._springing) {
 				for (const key in data) {
-					this._springs = null;
+					delete this._springs[key];
 				}
 			}
 			set.call(this, data);
