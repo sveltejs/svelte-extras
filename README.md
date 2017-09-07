@@ -77,6 +77,19 @@ The available options (and default values) are:
 
 This method returns a promise with an additional `abort` method. The tween will be aborted automatically if `key` is updated separately, either by a second tween or via `component.set(...)`. The promise will not resolve if the tween is aborted.
 
+### spring(key, end, options) ([live demo](https://svelte.technology/repl?version=1.38.0&gist=0afd4fc40944a544330ab03ee71f3649))
+
+Similar to `tween`, except it uses a spring physics simulation rather than a pre-defined easing curve, which gives more natural results in some situations. The `end` value can be anything you could pass to `tween`.
+
+The following options must be provided:
+
+* **stiffness** — the *spring constant*, a value between 0 and 1
+* **damping** — the *damping coefficient*, again between 0 and 1
+
+Figuring out the optimal combination of stiffness and damping typically takes a bit of trial and error. The higher the stiffness, the quicker the motion will be; the lower the damping, the 'springier' it will be.
+
+This method returns a promise that resolves when the simulation is complete — or not at all, if the simulation is aborted by another call to `spring(...)` or a call to `set(...)`.
+
 
 ### observeDeep(keypath, callback, options?) ([live demo](https://svelte.technology/repl?gist=94f68745adb18799030ef4c732c9774d))
 
