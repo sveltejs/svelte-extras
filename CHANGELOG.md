@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.5.2
+
+* Only end springs on specific keys when data is set ([#8](https://github.com/sveltejs/svelte-extras/issues/8))
+
 ## 1.5.1
 
 * Fix spring end threshold
