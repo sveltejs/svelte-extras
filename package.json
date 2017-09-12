@@ -1,6 +1,6 @@
 {
   "name": "svelte-extras",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Extra methods for Svelte components",
   "main": "dist/svelte-extras.cjs.js",
   "module": "dist/svelte-extras.es.js",
