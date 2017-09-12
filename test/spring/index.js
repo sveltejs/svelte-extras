@@ -14,9 +14,9 @@ module.exports = () => {
 			});
 
 			raf.tick(null);
-			assert(component.get('x'), 22);
+			assert.equal(component.get('x'), 22);
 			raf.tick(null);
-			assert(component.get('x'), 25.78);
+			assert.equal(component.get('x'), 25.78);
 
 			// this isn't great — it could be exactly 40 while
 			// the spring is still active. not sure how best to test
@@ -44,9 +44,9 @@ module.exports = () => {
 			});
 
 			raf.tick(null);
-			assert(component.get('x'), 22);
+			assert.equal(component.get('x').getTime(), 1496986887200);
 			raf.tick(null);
-			assert(component.get('x'), 25.78);
+			assert.equal(component.get('x').getTime(), 1496986887578);
 
 			while (component.get('x').getTime() !== c) {
 				raf.tick(null);
@@ -69,9 +69,9 @@ module.exports = () => {
 			});
 
 			raf.tick(null);
-			assert(component.get('x')[0], 22);
+			assert.equal(component.get('x')[0], 22);
 			raf.tick(null);
-			assert(component.get('x')[0], 25.78);
+			assert.equal(component.get('x')[0], 25.78);
 
 			// this isn't great — it could be exactly 40 while
 			// the spring is still active. not sure how best to test
@@ -96,9 +96,9 @@ module.exports = () => {
 			});
 
 			raf.tick(null);
-			assert(component.get('x').y, 22);
+			assert.equal(component.get('x').y, 22);
 			raf.tick(null);
-			assert(component.get('x').y, 25.78);
+			assert.equal(component.get('x').y, 25.78);
 
 			// this isn't great — it could be exactly 40 while
 			// the spring is still active. not sure how best to test
@@ -123,15 +123,37 @@ module.exports = () => {
 			});
 
 			raf.tick(null);
-			assert(component.get('x'), 22);
+			assert.equal(component.get('x'), 22);
 			raf.tick(null);
-			assert(component.get('x'), 25.78);
+			assert.equal(component.get('x'), 25.78);
 
 			component.set({ x: 30 });
 			raf.tick(null);
-			assert(component.get('x'), 30);
+			assert.equal(component.get('x'), 30);
 			raf.tick(null);
-			assert(component.get('x'), 30);
+			assert.equal(component.get('x'), 30);
+		});
+
+		it('maintains existing velocity', () => {
+			const { component, raf } = setup(`{{x}}`, {
+				x: 20
+			});
+
+			component.spring('x', 40, {
+				stiffness: 0.1,
+				damping: 0.01
+			});
+
+			raf.tick(null);
+			assert.equal(component.get('x'), 22);
+
+			component.spring('x', 40, {
+				stiffness: 0.1,
+				damping: 0.01
+			});
+
+			raf.tick(null);
+			assert.equal(component.get('x'), 25.78);
 		});
 	});
 };
