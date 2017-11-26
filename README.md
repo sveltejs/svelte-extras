@@ -111,7 +111,7 @@ If you're using a module bundler that supports tree-shaking, such as [Rollup](ht
 
 ## Universal module definition
 
-If you *really* need it, a UMD build is available at [svelte-extras/dist/svelte-extras.umd.js](https://unpkg.com/svelte-extras/dist/svelte-extras.js), and will register itself as `svelte.extras`. We recommend using a module bundler instead, however.
+If you *really* need it, a UMD build is available at [svelte-extras/dist/svelte-extras.umd.js](https://unpkg.com/svelte-extras/dist/svelte-extras.umd.js), and will register itself as `svelte.extras`. We recommend using a module bundler instead, however.
 
 
 ## License
