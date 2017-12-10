@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 1.6.0
+
+* Add `observeMany` method ([#11](https://github.com/sveltejs/svelte-extras/pull/11))
+
 ## 1.5.3
 
 * Preserve existing spring velocity when updating target ([#9](https://github.com/sveltejs/svelte-extras/issues/9))
