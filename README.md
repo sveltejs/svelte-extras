@@ -95,9 +95,16 @@ This method returns a promise that resolves when the simulation is complete — 
 
 Exactly the same as the built-in `observe` method, except that it observes nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (observe the `bar` property of the `foo` object) or `baz[0]` (observe the first member of the `baz` array).
 
+
+### observeMany(keys, callback, options?) ([live demo](https://svelte.technology/repl?gist=9194723c88b6f3ddcc79a6ed07cc5f1e))
+
+Observes multiple keys, without firing multiple times when they change simultaneously. `keys` is an array of keys, while the callback receives two arguments — an array of the new values corresponding to those keys, and an array of the old values. `options` can include `init` and `defer`, like the built-in `observe` method.
+
+
 ### getDeep(keypath) ([live demo](https://svelte.technology/repl?gist=42b551d60f971f953468a2142cfb25f3))
 
 Similar to the built-in `get` method, except that it gets nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (get the `bar` property of the `foo` object) or `baz[0]` (get the first member of the `baz` array).
+
 
 ### setDeep(keypath, value) ([live demo](https://svelte.technology/repl?gist=e33d01f9796341992101d8c23070eb76))
 
