@@ -54,6 +54,7 @@ module.exports = function setup(
 					reverse,
 					tween,
 					observeDeep,
+					observeMany,
 					getDeep,
 					setDeep,
 					spring
