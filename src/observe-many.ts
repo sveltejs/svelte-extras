@@ -6,47 +6,20 @@ export function observeMany(
 	callback: (newValue: any, oldValue: any) => void,
 	opts?: ObserverOptions
 ) {
-	const defer = opts && opts.defer;
-	const init = !opts || opts.init !== false;
+	const fn = callback.bind(this);
 
-	let values = init ?
-		keys.map(() => undefined) :
-		keys.map(key => this.get(key));
-
-	const dispatch = () => {
+	if (!opts || opts.init !== false) {
 		const state = this.get();
-		const oldValues = values;
-		values = keys.map(key => state[key]);
+		fn(keys.map(key => state[key]), keys.map(key => undefined));
+	}
 
-		callback.call(this, values, oldValues);
-	};
-
-	if (init) dispatch();
-
-	let n = 0;
-
-	const preObserver = () => {
-		if (!n++ && !defer) dispatch();
-	};
-
-	const postObserver = () => {
-		if (!--n && defer) dispatch();
-	};
-
-	const observers: Observer[] = [];
-
-	keys.forEach(key => {
-		observers.push(
-			this.observe(key, preObserver, { init: false }),
-			this.observe(key, postObserver, { init: false, defer: true })
-		);
-	});
-
-	return {
-		cancel() {
-			observers.forEach(observer => {
-				observer.cancel();
-			});
+	return this.on(opts && opts.defer ? 'update' : 'state', ({ changed, current, previous }) => {
+		let i = keys.length;
+		while (i--) {
+			if (changed[keys[i]]) {
+				fn(keys.map(key => current[key]), keys.map(key => previous[key]));
+				return;
+			}
 		}
-	};
+	});
 }
