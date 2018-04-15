@@ -91,9 +91,16 @@ Figuring out the optimal combination of stiffness and damping typically takes a 
 This method returns a promise that resolves when the simulation is complete — or not at all, if the simulation is aborted by another call to `spring(...)` or a call to `set(...)`.
 
 
+### observe(key, callback, options?)
+
+Runs the `callback` function with two arguments, `newValue` and `oldValue`, every time the value of `key` changes. `options` can contain two booleans — `init`, which determines whether to fire the callback immediately (the default) instead of waiting for a change, and `defer`, which determines whether the callback fires before or after the DOM has updated.
+
+This method used to be built in to Svelte; it's now recommended that you use the `onstate` and `onupdated` lifecycle hooks instead.
+
+
 ### observeDeep(keypath, callback, options?) ([live demo](https://svelte.technology/repl?gist=94f68745adb18799030ef4c732c9774d))
 
-Exactly the same as the built-in `observe` method, except that it observes nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (observe the `bar` property of the `foo` object) or `baz[0]` (observe the first member of the `baz` array).
+Exactly the same as `observe` method, except that it observes nested properties of objects and arrays, rather than the objects themselves. The `keypath` option is a string like `foo.bar` (observe the `bar` property of the `foo` object) or `baz[0]` (observe the first member of the `baz` array).
 
 
 ### observeMany(keys, callback, options?) ([live demo](https://svelte.technology/repl?gist=9194723c88b6f3ddcc79a6ed07cc5f1e))
