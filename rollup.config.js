@@ -3,12 +3,11 @@ import typescript from 'rollup-plugin-typescript';
 const pkg = require('./package.json');
 
 export default {
-	entry: 'src/index.ts',
-	moduleName: 'svelte.extras',
-	plugins: [typescript({ typescript: require('typescript') })],
-	targets: [
-		{ dest: pkg.main, format: 'cjs' },
-		{ dest: pkg.module, format: 'es' },
-		{ dest: 'dist/svelte-extras.umd.js', format: 'umd' }
-	]
+	input: 'src/index.ts',
+	output: [
+		{ file: pkg.main, format: 'cjs' },
+		{ file: pkg.module, format: 'es' },
+		{ file: 'dist/svelte-extras.umd.js', format: 'umd', name: 'svelte.extras' }
+	],
+	plugins: [typescript({ typescript: require('typescript') })]
 };
