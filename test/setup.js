@@ -24,7 +24,7 @@ module.exports = function setup(
 			if ( raf.callback ) raf.callback();
 		}
 	};
-	if (!window.performance) window.performance = {};
+
 	window.performance.now = () => raf.time;
 	global.requestAnimationFrame = cb => {
 		let called = false;
