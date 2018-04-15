@@ -8,6 +8,7 @@ require('./htmlEqual.js');
 describe('svelte-extras', () => {
 	require('./array-methods/index.js')();
 	require('./tween/index.js')();
+	require('./observe/index.js')();
 	require('./observeDeep/index.js')();
 	require('./observeMany/index.js')();
 	require('./getDeep/index.js')();

@@ -53,6 +53,7 @@ module.exports = function setup(
 					sort,
 					reverse,
 					tween,
+					observe,
 					observeDeep,
 					observeMany,
 					getDeep,
