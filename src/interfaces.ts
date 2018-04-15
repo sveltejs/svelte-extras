@@ -1,11 +1,9 @@
 export interface Component {
 	set(data: {}): void;
 	get(key?: string): any;
-	observe(
-		key: string,
-		callback: (newValue: any, oldValue: any) => void,
-		options?: ObserverOptions
-	): Observer;
+	on(key: string, handler: (event: any) => void): {
+		cancel: () => void
+	};
 
 	_currentTweens?: Record<string, any>; // TODO
 	_tweening?: boolean;

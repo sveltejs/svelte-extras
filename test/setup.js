@@ -24,6 +24,7 @@ module.exports = function setup(
 			if ( raf.callback ) raf.callback();
 		}
 	};
+	if (!window.performance) window.performance = {};
 	window.performance.now = () => raf.time;
 	global.requestAnimationFrame = cb => {
 		let called = false;
@@ -53,6 +54,7 @@ module.exports = function setup(
 					sort,
 					reverse,
 					tween,
+					observe,
 					observeDeep,
 					observeMany,
 					getDeep,

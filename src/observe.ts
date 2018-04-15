@@ -1,25 +1,18 @@
 import { Component, Observer, ObserverOptions } from './interfaces';
 
-export function observeMany(
+export function observe(
 	this: Component,
-	keys: string[],
+	key: string,
 	callback: (newValue: any, oldValue: any) => void,
 	opts?: ObserverOptions
 ) {
 	const fn = callback.bind(this);
 
 	if (!opts || opts.init !== false) {
-		const state = this.get();
-		fn(keys.map(key => state[key]), keys.map(key => undefined));
+		fn(this.get()[key]);
 	}
 
 	return this.on(opts && opts.defer ? 'update' : 'state', ({ changed, current, previous }) => {
-		let i = keys.length;
-		while (i--) {
-			if (changed[keys[i]]) {
-				fn(keys.map(key => current[key]), keys.map(key => previous[key]));
-				return;
-			}
-		}
+		if (changed[key]) fn(current[key], previous && previous[key]);
 	});
 }
