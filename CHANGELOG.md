@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 2.0.0
+
+* Add `observe` method, and reimplement `observeMany` and `observeDeep` ([#15](https://github.com/sveltejs/svelte-extras/issues/15))
+
 ## 1.6.0
 
 * Add `observeMany` method ([#11](https://github.com/sveltejs/svelte-extras/pull/11))
