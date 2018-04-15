@@ -16,25 +16,20 @@ export function observeDeep(
 	opts?: ObserverOptions
 ) {
 	const parts = keypath.replace(/\[(\d+)\]/g, '.$1').split('.');
-	const key = parts.shift();
-	let last: any =
-		opts && opts.init === false
-			? getNestedValue(this.get(key), parts)
-			: undefined;
+	const [key] = parts;
+	const fn = callback.bind(this);
 
-	return this.observe(
-		key,
-		value => {
-			value = getNestedValue(value, parts);
-			if (
-				value !== last ||
-				typeof value === 'object' ||
-				typeof value === 'function'
-			) {
-				callback.call(this, value, last);
+	let last: any = getNestedValue(this.get(), parts);
+
+	if (!opts || opts.init !== false) fn(last);
+
+	return this.on(opts && opts.defer ? 'update' : 'state', ({ changed, current, previous }) => {
+		if (changed[key]) {
+			const value = getNestedValue(current, parts);
+			if (value !== last || typeof value === 'object' || typeof value === 'function') {
+				fn(value, last);
+				last = value;
 			}
-			last = value;
-		},
-		opts
-	);
+		}
+	});
 }
