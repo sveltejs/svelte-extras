@@ -23,13 +23,20 @@ export function observeDeep(
 
 	if (!opts || opts.init !== false) fn(last);
 
-	return this.on(opts && opts.defer ? 'update' : 'state', ({ changed, current, previous }) => {
-		if (changed[key]) {
-			const value = getNestedValue(current, parts);
-			if (value !== last || typeof value === 'object' || typeof value === 'function') {
-				fn(value, last);
-				last = value;
+	return this.on(
+		opts && opts.defer ? 'update' : 'state',
+		({ changed, current, previous }) => {
+			if (changed[key]) {
+				const value = getNestedValue(current, parts);
+				if (
+					value !== last ||
+					typeof value === 'object' ||
+					typeof value === 'function'
+				) {
+					fn(value, last);
+					last = value;
+				}
 			}
 		}
-	});
+	);
 }

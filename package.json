@@ -1,6 +1,6 @@
 {
   "name": "svelte-extras",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Extra methods for Svelte components",
   "main": "dist/svelte-extras.cjs.js",
   "module": "dist/svelte-extras.es.js",
@@ -32,13 +32,16 @@
     "console-group": "^0.3.3",
     "eslint": "^4.2.0",
     "eslint-plugin-import": "^2.7.0",
-    "jsdom": "^11.1.0",
-    "mocha": "^5.1.0",
-    "rollup": "^0.57.1",
+    "jsdom": "^11.8.0",
+    "mocha": "^5.1.1",
+    "rollup": "^0.58.1",
     "rollup-plugin-buble": "^0.19.2",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-virtual": "^1.0.1",
-    "svelte": "^1.63.1",
+    "svelte": "^2.0.0",
     "typescript": "^2.4.2"
+  },
+  "peerDependencies": {
+    "svelte": "^2"
   }
 }

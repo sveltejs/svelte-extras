@@ -12,7 +12,10 @@ export function observe(
 		fn(this.get()[key]);
 	}
 
-	return this.on(opts && opts.defer ? 'update' : 'state', ({ changed, current, previous }) => {
-		if (changed[key]) fn(current[key], previous && previous[key]);
-	});
+	return this.on(
+		opts && opts.defer ? 'update' : 'state',
+		({ changed, current, previous }) => {
+			if (changed[key]) fn(current[key], previous && previous[key]);
+		}
+	);
 }

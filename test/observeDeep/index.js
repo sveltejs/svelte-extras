@@ -5,7 +5,7 @@ module.exports = () => {
 	describe('observeDeep', () => {
 		it('observes a property of an object', () => {
 			const foo = { bar: 1 };
-			const { component } = setup(`{{foo.bar}}`, { foo });
+			const { component } = setup(`{foo.bar}`, { foo });
 
 			const observed = [];
 
@@ -27,7 +27,7 @@ module.exports = () => {
 
 		it('respects `init: false`', () => {
 			const foo = { bar: 1 };
-			const { component } = setup(`{{foo.bar}}`, { foo });
+			const { component } = setup(`{foo.bar}`, { foo });
 
 			const observed = [];
 
@@ -48,7 +48,7 @@ module.exports = () => {
 
 		it('ignores nested values that are unchanged', () => {
 			const foo = { bar: 1 };
-			const { component } = setup(`{{foo.bar}}`, { foo });
+			const { component } = setup(`{foo.bar}`, { foo });
 
 			const observed = [];
 
@@ -68,7 +68,7 @@ module.exports = () => {
 
 		it('observes a property of an array', () => {
 			const foo = [1];
-			const { component } = setup(`{{foo[0]}}`, { foo });
+			const { component } = setup(`{foo[0]}`, { foo });
 
 			const observed = [];
 

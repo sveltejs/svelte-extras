@@ -5,9 +5,9 @@ const extras = require('../dist/svelte-extras.cjs.js');
 
 module.exports = function setup(
 	template = `
-		{{#each array as item}}
-			({{item}})
-		{{/each}}
+		{#each array as item}
+			({item})
+		{/each}
 	`,
 	data = { array: ['foo', 'bar', 'baz'] }
 ) {

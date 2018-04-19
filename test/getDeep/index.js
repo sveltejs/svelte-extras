@@ -5,7 +5,7 @@ module.exports = () => {
 	describe('getDeep', () => {
 		it('get a value from a keypath', () => {
 			const foo = { bar: { nested: { value: 1 } } };
-			const { component } = setup(`{{foo.bar.nested.value}}`, { foo });
+			const { component } = setup(`{foo.bar.nested.value}`, { foo });
 
 			const value = component.getDeep( 'foo.bar.nested.value' );
 
@@ -14,7 +14,7 @@ module.exports = () => {
 
 		it('get a value from an array keypath', () => {
 			const foo = { bar: { nested: { array: [1] } } };
-			const { component } = setup(`{{foo.bar.nested.array}}`, { foo });
+			const { component } = setup(`{foo.bar.nested.array}`, { foo });
 
 			const value = component.getDeep( 'foo.bar.nested.array[0]' );
 

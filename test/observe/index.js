@@ -4,7 +4,7 @@ const setup = require('../setup.js');
 module.exports = () => {
 	describe('observe', () => {
 		it('observes a property', () => {
-			const { component, target } = setup(`{{foo}}`, { foo: 1 });
+			const { component, target } = setup(`{foo}`, { foo: 1 });
 
 			const observed = [];
 
@@ -24,7 +24,7 @@ module.exports = () => {
 		});
 
 		it('respects init: false', () => {
-			const { component, target } = setup(`{{foo}}`, { foo: 1 });
+			const { component, target } = setup(`{foo}`, { foo: 1 });
 
 			const observed = [];
 
@@ -43,7 +43,7 @@ module.exports = () => {
 		});
 
 		it('respects defer: true', () => {
-			const { component, target } = setup(`{{foo}}`, { foo: 1 });
+			const { component, target } = setup(`{foo}`, { foo: 1 });
 
 			const observed = [];
 

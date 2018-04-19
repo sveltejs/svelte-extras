@@ -65,9 +65,14 @@ interface Spring {
 	update: (newValue: any, options: SpringOptions) => void;
 }
 
-function noop(){}
+function noop() {}
 
-function snap(key: string | number, a: any, b: any, options: SpringOptions): Spring {
+function snap(
+	key: string | number,
+	a: any,
+	b: any,
+	options: SpringOptions
+): Spring {
 	return {
 		key,
 		tick: (object: any) => {
@@ -80,7 +85,12 @@ function snap(key: string | number, a: any, b: any, options: SpringOptions): Spr
 	};
 }
 
-function number(key: string | number, a: number, b: number, options: SpringOptions): Spring {
+function number(
+	key: string | number,
+	a: number,
+	b: number,
+	options: SpringOptions
+): Spring {
 	let velocity = 0;
 	let aborted = false;
 
@@ -103,10 +113,7 @@ function number(key: string | number, a: number, b: number, options: SpringOptio
 
 			object[key] = a;
 
-			if (
-				velocity < velocityThreshold &&
-				Math.abs(b - a) < valueThreshold
-			) {
+			if (velocity < velocityThreshold && Math.abs(b - a) < valueThreshold) {
 				object[key] = b;
 				return false;
 			}
@@ -124,7 +131,12 @@ function number(key: string | number, a: number, b: number, options: SpringOptio
 	};
 }
 
-function date(key: string | number, a: Date, b: Date, options: SpringOptions): Spring {
+function date(
+	key: string | number,
+	a: Date,
+	b: Date,
+	options: SpringOptions
+): Spring {
 	const dummy = {};
 	const subspring = number(key, a.getTime(), b.getTime(), options);
 
@@ -148,7 +160,12 @@ function date(key: string | number, a: Date, b: Date, options: SpringOptions): S
 	};
 }
 
-function array(key: string | number, a: any[], b: any[], options: SpringOptions): Spring {
+function array(
+	key: string | number,
+	a: any[],
+	b: any[],
+	options: SpringOptions
+): Spring {
 	const value: any[] = [];
 	const subsprings: Spring[] = [];
 
@@ -185,7 +202,12 @@ function array(key: string | number, a: any[], b: any[], options: SpringOptions)
 	};
 }
 
-function object(key: string | number, a: object, b: object, options: SpringOptions): Spring {
+function object(
+	key: string | number,
+	a: object,
+	b: object,
+	options: SpringOptions
+): Spring {
 	const value = {};
 	const subsprings: Spring[] = [];
 
@@ -225,7 +247,11 @@ function object(key: string | number, a: object, b: object, options: SpringOptio
 function checkCompatibility(a: any, b: any) {
 	const type: string = typeof a;
 
-	if (type !== typeof b || Array.isArray(a) !== Array.isArray(b) || isDate(a) !== isDate(b)) {
+	if (
+		type !== typeof b ||
+		Array.isArray(a) !== Array.isArray(b) ||
+		isDate(a) !== isDate(b)
+	) {
 		throw new Error('Cannot interpolate values of different type');
 	}
 
@@ -236,22 +262,24 @@ function checkCompatibility(a: any, b: any) {
 			if (a.length !== b.length) {
 				throw new Error('Cannot interpolate arrays of different length');
 			}
-		}
-
-		else {
+		} else {
 			const aKeys = Object.keys(a);
 			const bKeys = Object.keys(b);
 
-			if (!keysMatch(a, b)) throw new Error('Cannot interpolate differently-shaped objects');
+			if (!keysMatch(a, b))
+				throw new Error('Cannot interpolate differently-shaped objects');
 		}
-	}
-
-	else if (type !== 'number') {
+	} else if (type !== 'number') {
 		throw new Error(`Cannot interpolate ${type} values`);
 	}
 }
 
-function getSpring(key: string | number, a: any, b: any, options: SpringOptions): Spring {
+function getSpring(
+	key: string | number,
+	a: any,
+	b: any,
+	options: SpringOptions
+): Spring {
 	if (a === b || a !== a) return snap(key, a, b, options);
 
 	checkCompatibility(a, b);
@@ -271,7 +299,12 @@ function getSpring(key: string | number, a: any, b: any, options: SpringOptions)
 	return number(key, a, b, options);
 }
 
-export function spring(this: Component, key: string, to: any, options: SpringOptions) {
+export function spring(
+	this: Component,
+	key: string,
+	to: any,
+	options: SpringOptions
+) {
 	if (!this._springs) {
 		this._springs = Object.create(null);
 		this._springCallbacks = Object.create(null);
@@ -291,11 +324,11 @@ export function spring(this: Component, key: string, to: any, options: SpringOpt
 	if (this._springs[key]) {
 		this._springs[key].update(to, options);
 	} else {
-		const spring = getSpring(key, this.get(key), to, options);
+		const spring = getSpring(key, this.get()[key], to, options);
 		this._springs[key] = spring;
 	}
 
-	const promise = new Promise((fulfil) => {
+	const promise = new Promise(fulfil => {
 		this._springCallbacks[key] = fulfil;
 	});
 

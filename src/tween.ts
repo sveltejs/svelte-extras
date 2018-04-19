@@ -154,7 +154,7 @@ export function tween(this: Component, key: string, to: any, options: Options = 
 
 	const t = {
 		key,
-		value: (options.interpolate || interpolate)(this.get(key), to),
+		value: (options.interpolate || interpolate)(this.get()[key], to),
 		to,
 		start,
 		end,

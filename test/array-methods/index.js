@@ -8,7 +8,7 @@ module.exports = function () {
 			const len = component.push('array', 'bop');
 
 			assert.equal(len, 4);
-			assert.deepEqual(component.get('array'), ['foo', 'bar', 'baz', 'bop']);
+			assert.deepEqual(component.get().array, ['foo', 'bar', 'baz', 'bop']);
 			assert.htmlEqual(target.innerHTML, `(foo)(bar)(baz)(bop)`);
 		});
 
@@ -17,7 +17,7 @@ module.exports = function () {
 			const last = component.pop('array');
 
 			assert.equal(last, 'baz');
-			assert.deepEqual(component.get('array'), ['foo', 'bar']);
+			assert.deepEqual(component.get().array, ['foo', 'bar']);
 			assert.htmlEqual(target.innerHTML, `(foo)(bar)`);
 		});
 
@@ -26,7 +26,7 @@ module.exports = function () {
 			const first = component.shift('array');
 
 			assert.equal(first, 'foo');
-			assert.deepEqual(component.get('array'), ['bar', 'baz']);
+			assert.deepEqual(component.get().array, ['bar', 'baz']);
 			assert.htmlEqual(target.innerHTML, `(bar)(baz)`);
 		});
 
@@ -35,7 +35,7 @@ module.exports = function () {
 			const len = component.unshift('array', 'bop');
 
 			assert.equal(len, 4);
-			assert.deepEqual(component.get('array'), ['bop', 'foo', 'bar', 'baz']);
+			assert.deepEqual(component.get().array, ['bop', 'foo', 'bar', 'baz']);
 			assert.htmlEqual(target.innerHTML, `(bop)(foo)(bar)(baz)`);
 		});
 
@@ -44,7 +44,7 @@ module.exports = function () {
 			const spliced = component.splice('array', 1, 1);
 
 			assert.deepEqual(spliced, ['bar']);
-			assert.deepEqual(component.get('array'), ['foo', 'baz']);
+			assert.deepEqual(component.get().array, ['foo', 'baz']);
 			assert.htmlEqual(target.innerHTML, `(foo)(baz)`);
 		});
 
@@ -53,7 +53,7 @@ module.exports = function () {
 			const sorted = component.sort('array');
 
 			assert.deepEqual(sorted, ['bar', 'baz', 'foo']);
-			assert.deepEqual(component.get('array'), ['bar', 'baz', 'foo']);
+			assert.deepEqual(component.get().array, ['bar', 'baz', 'foo']);
 			assert.htmlEqual(target.innerHTML, `(bar)(baz)(foo)`);
 		});
 
@@ -62,16 +62,16 @@ module.exports = function () {
 			const reversed = component.reverse('array');
 
 			assert.deepEqual(reversed, ['baz', 'bar', 'foo']);
-			assert.deepEqual(component.get('array'), ['baz', 'bar', 'foo']);
+			assert.deepEqual(component.get().array, ['baz', 'bar', 'foo']);
 			assert.htmlEqual(target.innerHTML, `(baz)(bar)(foo)`);
 		});
 
 		it('supports dot notation', () => {
 			const { component, target } = setup(
 				`
-				{{#each x.y.z as item}}
-					({{item}})
-				{{/each}}`,
+				{#each x.y.z as item}
+					({item})
+				{/each}`,
 				{
 					x: {
 						y: {
@@ -97,11 +97,11 @@ module.exports = function () {
 		it('supports array notation', () => {
 			const { component, target } = setup(
 				`
-				{{#each rows as row}}
-					{{#each row as cell}}
-						({{cell}})
-					{{/each}}
-				{{/each}}`,
+				{#each rows as row}
+					{#each row as cell}
+						({cell})
+					{/each}
+				{/each}`,
 				{
 					rows: [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i']]
 				}

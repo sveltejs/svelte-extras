@@ -4,7 +4,7 @@ const setup = require('../setup.js');
 module.exports = () => {
 	describe('observeMany', () => {
 		it('fires once per set, however many properties change', () => {
-			const { component, target } = setup(`{{foo}} {{bar}}`, { foo: 1, bar: 2 });
+			const { component, target } = setup(`{foo} {bar}`, { foo: 1, bar: 2 });
 
 			const observed = [];
 
@@ -25,7 +25,7 @@ module.exports = () => {
 		});
 
 		it('respects init: false', () => {
-			const { component, target } = setup(`{{foo}} {{bar}}`, { foo: 1, bar: 2 });
+			const { component, target } = setup(`{foo} {bar}`, { foo: 1, bar: 2 });
 
 			const observed = [];
 
@@ -43,7 +43,7 @@ module.exports = () => {
 		});
 
 		it('respects defer: true', () => {
-			const { component, target } = setup(`{{foo}} {{bar}}`, { foo: 1, bar: 2 });
+			const { component, target } = setup(`{foo} {bar}`, { foo: 1, bar: 2 });
 
 			const observed = [];
 

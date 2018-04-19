@@ -4,7 +4,7 @@ const setup = require('../setup.js');
 module.exports = () => {
 	describe('tween', () => {
 		it('tweens a number', () => {
-			const { component, target, raf } = setup(`{{x}}`, {
+			const { component, target, raf } = setup(`{x}`, {
 				x: 20
 			});
 
@@ -12,17 +12,17 @@ module.exports = () => {
 				duration: 100
 			});
 
-			assert.equal(component.get('x'), 20);
+			assert.equal(component.get().x, 20);
 			assert.htmlEqual(target.innerHTML, '20');
 
 			raf.tick(50);
-			assert.equal(component.get('x'), 30);
+			assert.equal(component.get().x, 30);
 			assert.htmlEqual(target.innerHTML, '30');
 
 			raf.tick(100);
 
 			return tween.then(() => {
-				assert.equal(component.get('x'), 40);
+				assert.equal(component.get().x, 40);
 				assert.htmlEqual(target.innerHTML, '40');
 			});
 		});
@@ -32,7 +32,7 @@ module.exports = () => {
 			const b = 1496986888000;
 			const c = 1496986889000;
 
-			const { component, target, raf } = setup(`{{x.getTime()}}`, {
+			const { component, target, raf } = setup(`{x.getTime()}`, {
 				x: new Date(a)
 			});
 
@@ -40,23 +40,23 @@ module.exports = () => {
 				duration: 100
 			});
 
-			assert.equal(component.get('x').getTime(), a);
+			assert.equal(component.get().x.getTime(), a);
 			assert.htmlEqual(target.innerHTML, String(a));
 
 			raf.tick(50);
-			assert.equal(component.get('x').getTime(), b);
+			assert.equal(component.get().x.getTime(), b);
 			assert.htmlEqual(target.innerHTML, String(b));
 
 			raf.tick(100);
 
 			return tween.then(() => {
-				assert.equal(component.get('x').getTime(), c);
+				assert.equal(component.get().x.getTime(), c);
 				assert.htmlEqual(target.innerHTML, String(c));
 			});
 		});
 
 		it('tweens an array', () => {
-			const { component, target, raf } = setup(`{{x[0]}}`, {
+			const { component, target, raf } = setup(`{x[0]}`, {
 				x: [20]
 			});
 
@@ -64,23 +64,23 @@ module.exports = () => {
 				duration: 100
 			});
 
-			assert.deepEqual(component.get('x'), [20]);
+			assert.deepEqual(component.get().x, [20]);
 			assert.htmlEqual(target.innerHTML, '20');
 
 			raf.tick(50);
-			assert.deepEqual(component.get('x'), [30]);
+			assert.deepEqual(component.get().x, [30]);
 			assert.htmlEqual(target.innerHTML, '30');
 
 			raf.tick(100);
 
 			return tween.then(() => {
-				assert.deepEqual(component.get('x'), [40]);
+				assert.deepEqual(component.get().x, [40]);
 				assert.htmlEqual(target.innerHTML, '40');
 			});
 		});
 
 		it('tweens an object', () => {
-			const { component, target, raf } = setup(`{{x.y}}`, {
+			const { component, target, raf } = setup(`{x.y}`, {
 				x: { y: 20 }
 			});
 
@@ -92,23 +92,23 @@ module.exports = () => {
 				}
 			);
 
-			assert.deepEqual(component.get('x'), { y: 20 });
+			assert.deepEqual(component.get().x, { y: 20 });
 			assert.htmlEqual(target.innerHTML, '20');
 
 			raf.tick(50);
-			assert.deepEqual(component.get('x'), { y: 30 });
+			assert.deepEqual(component.get().x, { y: 30 });
 			assert.htmlEqual(target.innerHTML, '30');
 
 			raf.tick(100);
 
 			return tween.then(() => {
-				assert.deepEqual(component.get('x'), { y: 40 });
+				assert.deepEqual(component.get().x, { y: 40 });
 				assert.htmlEqual(target.innerHTML, '40');
 			});
 		});
 
 		it('allows tweens to be aborted programmatically', () => {
-			const { component, target, raf } = setup(`{{x}}`, {
+			const { component, target, raf } = setup(`{x}`, {
 				x: 20
 			});
 
@@ -116,13 +116,13 @@ module.exports = () => {
 				duration: 100
 			});
 
-			assert.equal(component.get('x'), 20);
+			assert.equal(component.get().x, 20);
 			assert.htmlEqual(target.innerHTML, '20');
 
 			tween.abort();
 
 			raf.tick(50);
-			assert.equal(component.get('x'), 20);
+			assert.equal(component.get().x, 20);
 			assert.htmlEqual(target.innerHTML, '20');
 
 			tween.then(() => {
@@ -131,7 +131,7 @@ module.exports = () => {
 		});
 
 		it('aborts a tween if a new tween takes its place', () => {
-			const { component, target, raf } = setup(`{{x}}`, {
+			const { component, target, raf } = setup(`{x}`, {
 				x: 20
 			});
 
@@ -139,11 +139,11 @@ module.exports = () => {
 				duration: 100
 			});
 
-			assert.equal(component.get('x'), 20);
+			assert.equal(component.get().x, 20);
 			assert.htmlEqual(target.innerHTML, '20');
 
 			raf.tick(50);
-			assert.equal(component.get('x'), 30);
+			assert.equal(component.get().x, 30);
 			assert.htmlEqual(target.innerHTML, '30');
 
 			tween = component.tween('x', 130, {
@@ -151,19 +151,19 @@ module.exports = () => {
 			});
 
 			raf.tick(75);
-			assert.equal(component.get('x'), 55);
+			assert.equal(component.get().x, 55);
 			assert.htmlEqual(target.innerHTML, '55');
 
 			raf.tick(150);
 
 			return tween.then(() => {
-				assert.equal(component.get('x'), 130);
+				assert.equal(component.get().x, 130);
 				assert.htmlEqual(target.innerHTML, '130');
 			});
 		});
 
 		it('aborts a tween if data is set', () => {
-			const { component, target, raf } = setup(`{{x}}`, {
+			const { component, target, raf } = setup(`{x}`, {
 				x: 20
 			});
 
@@ -171,17 +171,17 @@ module.exports = () => {
 				duration: 100
 			});
 
-			assert.equal(component.get('x'), 20);
+			assert.equal(component.get().x, 20);
 			assert.htmlEqual(target.innerHTML, '20');
 
 			raf.tick(50);
-			assert.equal(component.get('x'), 30);
+			assert.equal(component.get().x, 30);
 			assert.htmlEqual(target.innerHTML, '30');
 
 			component.set({ x: -99 });
 
 			raf.tick(75);
-			assert.equal(component.get('x'), -99);
+			assert.equal(component.get().x, -99);
 			assert.htmlEqual(target.innerHTML, '-99');
 
 			tween.then(() => {
@@ -190,7 +190,7 @@ module.exports = () => {
 		});
 
 		it('allows custom interpolators', () => {
-			const { component, target, raf } = setup(`{{x}}`, {
+			const { component, target, raf } = setup(`{x}`, {
 				x: 'a'
 			});
 
@@ -204,13 +204,13 @@ module.exports = () => {
 			});
 
 			raf.tick(50);
-			assert.equal(component.get('x'), 'm');
+			assert.equal(component.get().x, 'm');
 			assert.htmlEqual(target.innerHTML, 'm');
 
 			raf.tick(100);
 
 			return tween.then(() => {
-				assert.equal(component.get('x'), 'z');
+				assert.equal(component.get().x, 'z');
 				assert.htmlEqual(target.innerHTML, 'z');
 			});
 		});

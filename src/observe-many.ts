@@ -13,13 +13,16 @@ export function observeMany(
 		fn(keys.map(key => state[key]), keys.map(key => undefined));
 	}
 
-	return this.on(opts && opts.defer ? 'update' : 'state', ({ changed, current, previous }) => {
-		let i = keys.length;
-		while (i--) {
-			if (changed[keys[i]]) {
-				fn(keys.map(key => current[key]), keys.map(key => previous[key]));
-				return;
+	return this.on(
+		opts && opts.defer ? 'update' : 'state',
+		({ changed, current, previous }) => {
+			let i = keys.length;
+			while (i--) {
+				if (changed[keys[i]]) {
+					fn(keys.map(key => current[key]), keys.map(key => previous[key]));
+					return;
+				}
 			}
 		}
-	});
+	);
 }
