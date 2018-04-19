@@ -1,5 +1,9 @@
 # svelte-extras changelog
 
+## 2.0.2
+
+* Prevent double-firing of deferred `observeMany` if observer is added in `oncreate`
+
 ## 2.0.1
 
 * Update for v2

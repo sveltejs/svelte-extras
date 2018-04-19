@@ -16,6 +16,8 @@ export function observeMany(
 	return this.on(
 		opts && opts.defer ? 'update' : 'state',
 		({ changed, current, previous }) => {
+			if (!previous) return; // prevent double-firing if observing in oncreate
+
 			let i = keys.length;
 			while (i--) {
 				if (changed[keys[i]]) {
