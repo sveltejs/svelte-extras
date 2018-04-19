@@ -6,6 +6,7 @@
   "module": "dist/svelte-extras.es.js",
   "scripts": {
     "build": "rollup -c",
+    "dev": "rollup -cw",
     "lint": "eslint src",
     "prepublish": "npm run lint && npm test",
     "test": "mocha",
