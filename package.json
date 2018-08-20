@@ -5,7 +5,7 @@
   "main": "dist/svelte-extras.cjs.js",
   "module": "dist/svelte-extras.es.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && agadoo",
     "dev": "rollup -cw",
     "lint": "eslint src",
     "prepublish": "npm run lint && npm test",
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/sveltejs/svelte-extras#readme",
   "devDependencies": {
     "@types/node": "^9.6.5",
+    "agadoo": "^1.0.0",
     "console-group": "^0.3.3",
     "eslint": "^4.2.0",
     "eslint-plugin-import": "^2.7.0",
