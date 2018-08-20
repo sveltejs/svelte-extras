@@ -77,7 +77,7 @@ The available options (and default values) are:
 
 This method returns a promise with an additional `abort` method. The tween will be aborted automatically if `key` is updated separately, either by a second tween or via `component.set(...)`. The promise will not resolve if the tween is aborted.
 
-### spring(key, end, options) ([live demo](https://svelte.technology/repl?version=1.38.0&gist=8def8776479d3d74b3b2829af3b01074))
+### spring(key, end, options) ([live demo](https://svelte.technology/repl?gist=8def8776479d3d74b3b2829af3b01074))
 
 Similar to `tween`, except it uses a spring physics simulation rather than a pre-defined easing curve, which gives more natural results in some situations. The `end` value can be anything you could pass to `tween`.
 
