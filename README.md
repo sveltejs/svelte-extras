@@ -1,3 +1,5 @@
+## DEPRECATED — As of Svelte v3, many of these are no longer necessary, and `tween` and `spring` are built into the main package
+
 # svelte-extras
 
 Extra methods for [Svelte](https://svelte.technology) components.
